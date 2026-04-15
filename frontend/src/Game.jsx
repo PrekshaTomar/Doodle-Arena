@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 import { io } from "socket.io-client";
 
-const socket = io("http://localhost:3001");
+const socket = io(process.env.backend);
 
 function Game() {
 
@@ -44,52 +44,52 @@ function Game() {
 
     // 👥 PLAYERS
     socket.on("players", (players) => {
-  const list = document.getElementById("players");
-  if (!list) return;
+      const list = document.getElementById("players");
+      if (!list) return;
 
-  list.innerHTML = "";
+      list.innerHTML = "";
 
-  players.forEach((p, index) => {
+      players.forEach((p, index) => {
 
-    const li = document.createElement("li");
+        const li = document.createElement("li");
 
-    li.style.display = "flex";
-    li.style.alignItems = "center";
-    li.style.padding = "10px";
-    li.style.borderRadius = "12px";
-    li.style.margin = "6px 0";
-    li.style.background = "#fff";
-    li.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
+        li.style.display = "flex";
+        li.style.alignItems = "center";
+        li.style.padding = "10px";
+        li.style.borderRadius = "12px";
+        li.style.margin = "6px 0";
+        li.style.background = "#fff";
+        li.style.boxShadow = "0 2px 8px rgba(0,0,0,0.1)";
 
-    // 👤 Avatar
-    const img = document.createElement("img");
-    img.src = `/avatar${(index % 3) + 1}.png`;
-    img.style.width = "35px";
-    img.style.borderRadius = "50%";
+        // 👤 Avatar
+        const img = document.createElement("img");
+        img.src = `/avatar${(index % 3) + 1}.png`;
+        img.style.width = "35px";
+        img.style.borderRadius = "50%";
 
-    // 🧑 Name
-    const name = document.createElement("span");
-    name.innerText = p.name;
-    name.style.marginLeft = "10px";
-    name.style.fontWeight = "bold";
+        // 🧑 Name
+        const name = document.createElement("span");
+        name.innerText = p.name;
+        name.style.marginLeft = "10px";
+        name.style.fontWeight = "bold";
 
-    // 🏆 Score
-    const score = document.createElement("span");
-    score.innerText = "🏆 " + p.score;
-    score.style.marginLeft = "auto";
+        // 🏆 Score
+        const score = document.createElement("span");
+        score.innerText = "🏆 " + p.score;
+        score.style.marginLeft = "auto";
 
-    // 👑 Crown for top player
-    if (p.score === Math.max(...players.map(pl => pl.score))) {
-      name.innerText += " 👑";
-    }
+        // 👑 Crown for top player
+        if (p.score === Math.max(...players.map(pl => pl.score))) {
+          name.innerText += " 👑";
+        }
 
-    li.appendChild(img);
-    li.appendChild(name);
-    li.appendChild(score);
+        li.appendChild(img);
+        li.appendChild(name);
+        li.appendChild(score);
 
-    list.appendChild(li);
-  });
-});
+        list.appendChild(li);
+      });
+    });
 
     // 💬 CHAT
     socket.on("chat", (data) => {
@@ -180,17 +180,17 @@ function Game() {
           <canvas id="canvas"></canvas>
 
           <div className="colors">
-            <button style={{background:"red"}} onClick={()=>changeColor("red")}></button>
-            <button style={{background:"blue"}} onClick={()=>changeColor("blue")}></button>
-            <button style={{background:"green"}} onClick={()=>changeColor("green")}></button>
-            <button style={{background:"black"}} onClick={()=>changeColor("black")}></button>
+            <button style={{ background: "red" }} onClick={() => changeColor("red")}></button>
+            <button style={{ background: "blue" }} onClick={() => changeColor("blue")}></button>
+            <button style={{ background: "green" }} onClick={() => changeColor("green")}></button>
+            <button style={{ background: "black" }} onClick={() => changeColor("black")}></button>
 
             <button onClick={clearCanvas}>🧹</button>
 
-            <input 
-              type="range" 
-              min="1" 
-              max="10" 
+            <input
+              type="range"
+              min="1"
+              max="10"
               defaultValue="3"
               onChange={(e) => changeSize(e.target.value)}
             />
